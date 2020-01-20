@@ -1,0 +1,37 @@
+{
+  "name": "tango",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc && node dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/morgan": "^1.7.37",
+    "dotenv": "^8.2.0",
+    "dotenv-safe": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "http-errors": "^1.7.3",
+    "http-status": "^1.4.2",
+    "mongoose": "^5.8.9",
+    "morgan": "^1.9.1",
+    "passport": "^0.4.1"
+  },
+  "devDependencies": {
+    "@types/dotenv-safe": "^8.1.0",
+    "@types/express": "^4.17.2",
+    "@types/helmet": "0.0.45",
+    "@types/http-errors": "^1.6.3",
+    "@types/http-status": "^1.1.2",
+    "@types/mongoose": "^5.5.41",
+    "@types/passport": "^1.0.2",
+    "tslint": "^5.20.1",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^3.7.5"
+  }
+}
