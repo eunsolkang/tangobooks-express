@@ -7,7 +7,9 @@ import helmet from 'helmet';
 import * as error from "./error";
 import passport from 'passport';
 import cors from 'cors';
-import '../passport/kakao-login';
+import '../passport/local-signin';
+import '../passport/local-signup';
+import '../passport/jwt';
 
 const app = express();
 

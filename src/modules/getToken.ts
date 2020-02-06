@@ -4,12 +4,14 @@ import { generateToken } from './generateToken';
 
 export const getToken = async(req : Request, res : Response, next) => {
     const user = req.user as UserModel;
+    delete user.user_pw;
     console.log(user);
     
     const payload = user;
 
     try{
         const token = await generateToken(payload);
+        
         return res.json({
             token
         })

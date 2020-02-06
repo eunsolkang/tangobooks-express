@@ -1,5 +1,5 @@
 import { Strategy as KakaoStrategy } from 'passport-kakao';
-import User from '../models/User';
+import User from '../models/User'
 import passport from 'passport';
 
 
@@ -13,8 +13,7 @@ passport.use(
     new KakaoStrategy(kakaoKey, async(accessToken, refreshToken, profile, done) => {
       
       const data = {
-        user_id : profile.id,
-        username : profile.username
+        user_id : profile.id
       }
       const user = await User.findOne({user_id : data.user_id});
       if ( !user ){
@@ -28,7 +27,6 @@ passport.use(
       }
       else {
         console.log('Old User!');
-        
       }
       return done(null, profile)
     })
