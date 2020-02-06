@@ -6,6 +6,8 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import * as error from "./error";
 import passport from 'passport';
+import cors from 'cors';
+import '../passport/kakao-login';
 
 const app = express();
 
@@ -17,7 +19,11 @@ app.use(bodyParser.json());
 app.set('jwt-secret', config.secret);
 
 
-
+const corsOptions = {
+    origin: 'http://localhost:3001', // 허락하고자 하는 요청 주소
+    credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
+};
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

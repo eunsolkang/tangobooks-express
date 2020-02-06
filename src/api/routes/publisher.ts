@@ -31,7 +31,7 @@ router.get('/:id', async(req,res, next) =>{
                 return res.status(500).json({error: err});
             }
             if ( !publisher ) {
-                return res.status(404).json({error: 'Publisher not found!'});
+                return res.status(404).json({error: 'publisher not found!'});
             }
             res.send({success : true, data : publisher});
         });

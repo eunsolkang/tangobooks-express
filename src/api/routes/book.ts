@@ -35,7 +35,7 @@ router.post('/', async(req, res, next)=>{
 
 router.get('/', async(req,res, next) =>{
     try{ 
-      const books = await Book.find({publisher : req.query.publisher});
+      const books = await Book.find({[req.query] : req.query.publisher});
       res.send({status:200, data:books})
     }
     catch(error){
@@ -50,7 +50,7 @@ router.get('/:id', async(req,res, next) =>{
                 return res.status(500).json({error: err});
             }
             if ( !book ) {
-                return res.status(404).json({error: 'Publisher not found!'});
+                return res.status(404).json({error: 'book not found!'});
             }
             res.send({success : true, data : book});
         });

@@ -10,6 +10,7 @@ export interface BookModel extends mongoose.Document {
         code : string;
         url : string;
         active : boolean;
+        price : number;
     }]
 }
 const BookSchema: Schema<BookModel> = new Schema({
@@ -20,7 +21,8 @@ const BookSchema: Schema<BookModel> = new Schema({
     codes : [{
         code : { type: String },
         url : { type: String },
-        active : { type : Boolean, default : true } 
+        active : { type : Boolean, default : true },
+        price : {type : Number, default : 0}
     }]
 },{ timestamps: true } );
 
