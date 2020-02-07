@@ -11,16 +11,17 @@ const kakaoKey = {
 passport.use(
     "kakao-login",
     new KakaoStrategy(kakaoKey, async(accessToken, refreshToken, profile, done) => {
-      
+      console.log(profile);
+        
       const data = {
-        user_id : profile.id
+        user_id : profile.id,
+        username : profile.username
       }
       const user = await User.findOne({user_id : data.user_id});
       if ( !user ){
         try{
           await new User(data).save();
           console.log('new user!');
-          
         }catch(e){
           done('error!')
         }

@@ -15,13 +15,17 @@ passport.use(
         async( req : Request, user_id : string, user_pw : string, next : any) => {
             try{
                 const user = await User.findOne({user_id : user_id}) as UserModel;
+                console.log(user);
+                
                 if ( user ){
                     const isValidPassword = user.validatePassword(user_pw);
+                    console.log(isValidPassword);
+                    
                     return isValidPassword ? 
                             next(null, user.toObject()) :
                             next('wrong password', false)
                 }
-                next('wrong user_id', false);
+                return next('wrong user_id', false);
             }catch(error){
                 next(error);
             }

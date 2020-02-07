@@ -1,17 +1,22 @@
 import User, { UserModel } from '../models/User'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local';
-
+import {getHashCode} from '../modules/getHashCode'
+type SignupRequst = {
+    body : {
+        admin : boolean
+    }
+}
 passport.use(
     'local-signup',
     new LocalStrategy(
         {
             usernameField: 'user_id',
             passwordField: 'user_pw',
-            passReqToCallback: false,
+            passReqToCallback: true,
             session: false,
         },
-        async ( user_id: string , user_pw : string,  next: any) => {
+        async ( req : SignupRequst, user_id: string , user_pw : string,  next: any) => {
             try{
                 
                 const user = await User.findOne({ user_id })
@@ -24,7 +29,8 @@ passport.use(
                 let newUser = new User() as UserModel;
                 newUser.user_id = user_id;
                 newUser.user_pw = newUser.generateHash(user_pw);
-
+                newUser.hash = await getHashCode('user')
+                newUser.admin = req.body.admin || false
                 newUser.save();
                 
                 return next(null, newUser.toObject());

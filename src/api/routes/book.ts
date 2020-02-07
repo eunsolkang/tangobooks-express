@@ -1,23 +1,11 @@
 import express from "express";
 import Book from "../../models/Book";
+import {getHashCode} from '../../modules/getHashCode'
 
 const router = express.Router();
 
 router.post('/', async(req, res, next)=>{
-    let hash : string = '';
-    while(1){
-        for (let i=0; i<6; i++){
-            const rand : number = Math.floor(Math.random() * 25) + 65;
-            const char : string = String.fromCharCode(rand);
-            hash += char;
-        }
-        const book = await Book.findOne({hash: hash});
-        if ( book ){
-            hash = '';
-            continue;
-        }
-        break;
-    }
+    const hash = getHashCode('book');
     const data = {
         name : req.body.name,
         hash : hash,

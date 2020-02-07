@@ -4,16 +4,22 @@ import { getToken } from '../../modules/getToken';
 import User from '../../models/User';
 import { validateBody } from '../../modules/validateBody';
 
+
 const router = express.Router();
 
-router.get('/kakao', passport.authenticate("kakao-login"));
+router.get('/kakao', 
+(req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+},passport.authenticate("kakao-login"));
 router.get(
     "/kakao/callback",
     passport.authenticate("kakao-login", {
-      successRedirect: "localhost:8080/main",
       failureRedirect: "/v1/auth/fail",
       session: false
-    }), getToken
+    }), async(req, res, next) => {
+      res.redirect(`http://localhost:8080/`);
+    }
 );
 
 router.post(
