@@ -23,7 +23,7 @@ app.set('jwt-secret', config.secret);
 
 
 const corsOptions = {
-    origin: 'http://localhost:8080', // 허락하고자 하는 요청 주소
+    origin: 'http://localhost:3001', // 허락하고자 하는 요청 주소
     credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
 };
 app.use(cors(corsOptions));
