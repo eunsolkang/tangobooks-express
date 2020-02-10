@@ -1,10 +1,11 @@
 import mongoose, { Schema } from "mongoose";
+import { BookModel } from './Book'
 import bcrypt from 'bcrypt';
 
 export interface UserModel extends mongoose.Document {
     user_id : string;
     user_pw? : string;
-    library? : [string];
+    library? : [BookModel];
     coin? : number;
     experience : number;
     username :string;
@@ -12,7 +13,8 @@ export interface UserModel extends mongoose.Document {
     hash : string 
     generateHash : (user_pw: string) => string;
     validatePassword : (user_pw: string) => boolean;
-    admin : boolean
+    admin : boolean,
+    done : false
 }
 const UserSchema: Schema<UserModel> = new Schema({
     user_id : {type : String},
@@ -21,9 +23,10 @@ const UserSchema: Schema<UserModel> = new Schema({
     temp : {type : Boolean, default : true},
     username : {type : String},
     hash : {type : String},
-    library : [{ type: String }],
+    library : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
     experience : { type: Number, default : 100 },
     coin : { type: Number, default : 0 },
+    done : {type : Boolean, default : false}
 },{ timestamps: true } );
 
 

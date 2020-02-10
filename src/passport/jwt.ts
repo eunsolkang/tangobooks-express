@@ -23,6 +23,7 @@ passpost.use(
         async(req: Request, payload : tokenPayload, next : any) => {
             try{
                 const user = await User.findById(payload._id);
+                console.log('JWT 발급중');
                 
                 return user ? next(null, user.toObject()) : next('user not found', false) 
             }catch(error){

@@ -4,23 +4,61 @@ import { getToken } from '../../modules/getToken';
 import User from '../../models/User';
 import { validateBody } from '../../modules/validateBody';
 
-
 const router = express.Router();
 
 router.get('/kakao', 
-(req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-},passport.authenticate("kakao-login"));
+    (req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*");
+      next();
+    },passport.authenticate("kakao-login")
+);
+
 router.get(
     "/kakao/callback",
     passport.authenticate("kakao-login", {
-      failureRedirect: "/v1/auth/fail",
-      session: false
-    }), async(req, res, next) => {
-      res.redirect(`http://localhost:8080/`);
+      failureRedirect: "http://localhost:8080/login",
+      session: true
+    }), async(req :any, res, next) => {
+      if ( req.user.done ) {
+        req.session.save(function(){
+          res.redirect('http://localhost:8080/')
+        });
+      }
+      else {
+        req.session.save(function(){
+          res.redirect(`http://localhost:8080/register?code=${req.user.hash}`)
+        });
+      }
+        
+      
+      
     }
 );
+
+router.get('/me', async(req : any, res, next)=>{
+  if (req.isAuthenticated()) {
+    res.send({
+      data : req.user
+    })
+  }
+  else{
+    const data = {
+      username : "손",
+      hash : "geust"
+    }
+    res.send({
+      data : data
+    })
+  }
+})
+
+router.put('/user/:id', async(req : any, res, next)=>{
+  const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set : req.body}
+  );
+  res.send({ success: true, data: user });
+})
 
 router.post(
   '/signup',

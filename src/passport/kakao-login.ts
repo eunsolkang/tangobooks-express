@@ -1,6 +1,7 @@
 import { Strategy as KakaoStrategy } from 'passport-kakao';
-import User from '../models/User'
+import User, { UserModel } from '../models/User'
 import passport from 'passport';
+import { getHashCode } from '../modules/getHashCode';
 
 
 const kakaoKey = {
@@ -11,25 +12,27 @@ const kakaoKey = {
 passport.use(
     "kakao-login",
     new KakaoStrategy(kakaoKey, async(accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-        
+      
       const data = {
         user_id : profile.id,
         username : profile.username
       }
-      const user = await User.findOne({user_id : data.user_id});
+      let user = await User.findOne({user_id : data.user_id});
       if ( !user ){
         try{
-          await new User(data).save();
-          console.log('new user!');
+          console.log('New User!');
+          
+          let newUser = new User(data) as UserModel;
+          newUser.hash = await getHashCode('user')
+          await newUser.save();
         }catch(e){
-          done('error!')
+          return done('error!')
         }
       }
       else {
         console.log('Old User!');
       }
-      return done(null, profile)
+      return done(null, user)
     })
 );
   

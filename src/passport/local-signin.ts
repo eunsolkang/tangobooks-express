@@ -14,11 +14,16 @@ passport.use(
         },
         async( req : Request, user_id : string, user_pw : string, next : any) => {
             try{
+                
+                
                 const user = await User.findOne({user_id : user_id}) as UserModel;
+                
                 console.log(user);
                 
                 if ( user ){
-                    const isValidPassword = user.validatePassword(user_pw);
+                    console.log('비밀번호 검증중...');
+                    const isValidPassword = await user.validatePassword(user_pw);
+                    console.log('비밀번호 검증 완료!');
                     console.log(isValidPassword);
                     
                     return isValidPassword ? 
