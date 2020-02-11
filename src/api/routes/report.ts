@@ -12,7 +12,6 @@ router.post('/', async(req, res, next)=>{
     }
 });
 
-
 router.get('/', async(req,res, next) =>{
     try{ 
       const reports = await Report.find({}).populate("book").populate("publisher").populate("user");
