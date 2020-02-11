@@ -14,7 +14,6 @@ router.post('/', async(req, res, next)=>{
 
 
 router.get('/', async(req,res, next) =>{
-
     try{ 
       const publishers = await Publisher.find({});
       res.send({status:200, data:publishers})

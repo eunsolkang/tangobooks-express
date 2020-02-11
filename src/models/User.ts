@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 export interface UserModel extends mongoose.Document {
     user_id : string;
     user_pw? : string;
-    library? : [BookModel];
+    library? : BookModel[];
     coin? : number;
     experience : number;
     username :string;
@@ -23,7 +23,7 @@ const UserSchema: Schema<UserModel> = new Schema({
     temp : {type : Boolean, default : true},
     username : {type : String},
     hash : {type : String},
-    library : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Book' }],
+    library : [{ type: mongoose.Schema.Types.ObjectId, ref: 'book' }],
     experience : { type: Number, default : 100 },
     coin : { type: Number, default : 0 },
     done : {type : Boolean, default : false}

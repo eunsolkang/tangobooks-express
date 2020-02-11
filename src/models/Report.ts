@@ -1,0 +1,26 @@
+import mongoose, { Schema } from "mongoose";
+import {PublisherModel} from './Publisher'
+import {BookModel} from './Book'
+import {UserModel } from './User'
+
+export interface ReportrModel extends mongoose.Document {
+    publisher : PublisherModel;
+    user : UserModel;
+    book : BookModel;
+    code : string;
+    reason : string;
+    answer : string;
+    refund : boolean;
+}
+const ReportSchema: Schema<ReportrModel> = new Schema({
+    publisher : { type: mongoose.Schema.Types.ObjectId, ref: 'publisher'},
+    book : { type: mongoose.Schema.Types.ObjectId, ref: 'book' },
+    user : { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    code : {type : String},
+    reason : {type : String},
+    answer : {type : String},
+    refund : {type :Boolean}
+
+},{ timestamps: true } );
+
+export default  mongoose.model('report', ReportSchema);

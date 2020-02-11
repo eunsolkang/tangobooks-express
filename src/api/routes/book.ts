@@ -31,9 +31,9 @@ router.get('/', async(req,res, next) =>{
     }
 });
 
-router.get('/:id', async(req,res, next) =>{
+router.get('/:hash', async(req,res, next) =>{
     try{
-        await Book.findOne({_id: req.params.id}, (err, book) => {
+        await Book.findOne({hash: req.params.hash}, (err, book) => {
             if (err) {
                 return res.status(500).json({error: err});
             }

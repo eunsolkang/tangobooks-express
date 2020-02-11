@@ -1,7 +1,8 @@
 import express from "express";
 import passport from 'passport'
 import { getToken } from '../../modules/getToken';
-import User from '../../models/User';
+import User, { UserModel } from '../../models/User';
+import Book, { BookModel } from '../../models/Book';
 import { validateBody } from '../../modules/validateBody';
 
 const router = express.Router();
@@ -29,16 +30,16 @@ router.get(
           res.redirect(`http://localhost:8080/register?code=${req.user.hash}`)
         });
       }
-        
-      
-      
     }
 );
 
+
+
 router.get('/me', async(req : any, res, next)=>{
   if (req.isAuthenticated()) {
+    const user = await User.findById(req.user._id).populate('library')
     res.send({
-      data : req.user
+      data : user
     })
   }
   else{
@@ -52,13 +53,50 @@ router.get('/me', async(req : any, res, next)=>{
   }
 })
 
+
 router.put('/user/:id', async(req : any, res, next)=>{
+  console.log(req.body);
+  
   const user = await User.findOneAndUpdate(
       { _id: req.params.id },
-      { $set : req.body}
+      { $set : req.body},
+      {new : true}
   );
   res.send({ success: true, data: user });
 })
+
+router.put('/lib/:hash', async(req : any, res, next)=>{
+  try{
+    const book = await Book.findOne({ hash: req.params.hash }) as unknown as BookModel;
+    const newUser = await User.findOneAndUpdate(
+      { _id: req.user._id},
+      { $addToSet : {library : book._id}},
+      {new : true}
+    ).populate('library');
+    res.send({
+      status : 200,
+      data : newUser
+    })
+  }catch(error){
+    next(error);
+  }
+});
+router.delete('/lib/:hash', async(req : any, res, next)=>{
+  try{
+    const book = await Book.findOne({ hash: req.params.hash }) as unknown as BookModel;
+    const newUser = await User.findOneAndUpdate(
+      { _id: req.user._id},
+      { $pull : {library : book._id}},
+      {new : true}
+    ).populate('library');
+    res.send({
+      status : 200,
+      data : newUser
+    })
+  }catch(error){
+    next(error);
+  }
+});
 
 router.post(
   '/signup',
