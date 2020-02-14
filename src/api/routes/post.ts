@@ -12,9 +12,7 @@ router.post('/', async(req, res, next)=>{
     }
 });
 
-
 router.get('/', async(req,res, next) =>{
-
     try{ 
       const posts = await Post.find({});
       res.send({status:200, data:posts})
@@ -26,16 +24,20 @@ router.get('/', async(req,res, next) =>{
 
 router.get('/:id', async(req,res, next) =>{
     try{
-        await Post.findOne({_id: req.params.id}, (err, post) => {
-            if (err) {
-                return res.status(500).json({error: err});
-            }
-            if ( !post ) {
-                return res.status(404).json({error: 'post not found!'});
-            }
-            res.send({success : true, data : post});
-        });
-        
+        const post = await Post.findOne({_id: req.params.id});
+        res.send({success : true, data : post});
+    }catch(error){
+        next(error);
+    }
+});
+
+router.put('/:id', async(req, res, next) =>{
+    try{
+        const post = await Post.findOneAndUpdate(
+            { _id: req.params.id },
+            { set : req.body}
+        );
+        res.send({ success: true, data: post });
     }catch(error){
         next(error);
     }
@@ -50,16 +52,13 @@ router.delete('/:id', async(req, res, next) => {
     }
 });
 
-router.put('/:id', async(req, res, next) =>{
+router.delete('/', async(req, res, next) => {
     try{
-        const post = await Post.findOneAndUpdate(
-            { _id: req.params.id },
-            { $set : req.body}
-        );
-        res.send({ success: true, data: post });
+        await Post.remove({});
+        res.send({ success: true, data: "okay" });
     }catch(error){
         next(error);
     }
-})
+});
 
 export default router;

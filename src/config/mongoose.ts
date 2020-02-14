@@ -13,7 +13,7 @@ mongoose.connection.on("error", err => {
 
 // print mongoose logs in dev env
 if (config.env === "development") {
-  mongoose.set("debug", true);
+  // mongoose.set("debug", true);
 }
 export const connect = () => {
   console.log(config.mongo.uri);

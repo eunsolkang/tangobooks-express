@@ -3,7 +3,7 @@ import {PublisherModel} from './Publisher'
 import {BookModel} from './Book'
 import {UserModel } from './User'
 
-export interface ReportrModel extends mongoose.Document {
+export interface ReportModel extends mongoose.Document {
     publisher : PublisherModel;
     user : UserModel;
     book : BookModel;
@@ -12,7 +12,7 @@ export interface ReportrModel extends mongoose.Document {
     answer : string;
     refund : boolean;
 }
-const ReportSchema: Schema<ReportrModel> = new Schema({
+const ReportSchema: Schema<ReportModel> = new Schema({
     publisher : { type: mongoose.Schema.Types.ObjectId, ref: 'publisher'},
     book : { type: mongoose.Schema.Types.ObjectId, ref: 'book' },
     user : { type: mongoose.Schema.Types.ObjectId, ref: 'user' },

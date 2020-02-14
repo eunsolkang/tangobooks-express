@@ -16,6 +16,9 @@ const config = {
         ? process.env.MONGO_URI_TESTS
         : process.env.MONGO_URI
   },
+  client : {
+    uri : process.env.CLIENT_URL
+  }
 };
 
 export default config;

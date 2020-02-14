@@ -1,18 +1,24 @@
 import express from "express";
 import Report from "../../models/Report";
+import History from "../../models/History";
 
 const router = express.Router();
 
 router.post('/', async(req, res, next)=>{
     try{
         const report = await new Report(req.body).save();
+        const history = await History.findOneAndUpdate(
+            { _id: req.body.history },
+            { $set : {report : report._id }}
+        );
+        // res.send({ success: true, data: history });
         res.send({status:200, data:report});
     }catch( error ){ 
         next(error);
     }
 });
 
-router.get('/', async(req,res, next) =>{
+router.get('/', async(req, res, next) =>{
     try{ 
       const reports = await Report.find({}).populate("book").populate("publisher").populate("user");
       res.send({status:200, data:reports})

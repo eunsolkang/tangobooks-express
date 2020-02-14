@@ -4,6 +4,7 @@ import { getToken } from '../../modules/getToken';
 import User, { UserModel } from '../../models/User';
 import Book, { BookModel } from '../../models/Book';
 import { validateBody } from '../../modules/validateBody';
+import config from "../../config/vars";
 
 const router = express.Router();
 
@@ -17,17 +18,17 @@ router.get('/kakao',
 router.get(
     "/kakao/callback",
     passport.authenticate("kakao-login", {
-      failureRedirect: "http://localhost:8080/login",
+      failureRedirect: `${config.client.uri}/login`,
       session: true
     }), async(req :any, res, next) => {
       if ( req.user.done ) {
         req.session.save(function(){
-          res.redirect('http://localhost:8080/')
+          res.redirect(config.client.uri)
         });
       }
       else {
         req.session.save(function(){
-          res.redirect(`http://localhost:8080/register?code=${req.user.hash}`)
+          res.redirect(`${config.client.uri}/register?code=${req.user.hash}`)
         });
       }
     }
@@ -56,12 +57,11 @@ router.get('/me', async(req : any, res, next)=>{
 
 router.put('/user/:id', async(req : any, res, next)=>{
   console.log(req.body);
-  
   const user = await User.findOneAndUpdate(
       { _id: req.params.id },
       { $set : req.body},
       {new : true}
-  );
+  ).populate('library');
   res.send({ success: true, data: user });
 })
 
@@ -109,16 +109,6 @@ router.post(
   validateBody,
   passport.authenticate('local-signin', { session: false }),
   getToken
-)
-router.post(
-  '/private',
-  passport.authenticate('jwt', {session : false}),
-  (req, res, next) => {
-      res.send({
-          status : 200,
-          data : req.user
-      })
-  }
 )
 
 router.get('/users', async(req, res, next) => {
