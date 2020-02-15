@@ -19,7 +19,7 @@ const ReportSchema: Schema<ReportModel> = new Schema({
     code : {type : String},
     reason : {type : String},
     answer : {type : String},
-    refund : {type :Boolean}
+    refund : {type : Boolean}
 
 },{ timestamps: true } );
 

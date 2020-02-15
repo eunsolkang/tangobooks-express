@@ -2,12 +2,13 @@ import { Strategy as KakaoStrategy } from 'passport-kakao';
 import User, { UserModel } from '../models/User'
 import passport from 'passport';
 import { getHashCode } from '../modules/getHashCode';
+import config from '../config/vars'
 
 
 const kakaoKey = {
     clientID: "10eecd41090498c6670d59f7bd3ac862",
     clientSecret: "dJRxX7bigvOrwBBATVEHTvidrEDFyIlu",
-    callbackURL: "http://localhost:3000/v1/auth/kakao/callback"
+    callbackURL: `${config.server.uri}/v1/auth/kakao/callback`
 };  
 passport.use(
     "kakao-login",

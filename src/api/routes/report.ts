@@ -11,7 +11,6 @@ router.post('/', async(req, res, next)=>{
             { _id: req.body.history },
             { $set : {report : report._id }}
         );
-        // res.send({ success: true, data: history });
         res.send({status:200, data:report});
     }catch( error ){ 
         next(error);
@@ -45,14 +44,14 @@ router.get('/', async(req, res, next) =>{
 //     }
 // });
 
-// router.delete('/:id', async(req, res, next) => {
-//     try{
-//         await Report.findOneAndRemove({ _id: req.params.id });
-//         res.send({ success: true, data: "okay" });
-//     }catch(error){
-//         next(error);
-//     }
-// });
+router.delete('/:id', async(req, res, next) => {
+    try{
+        await Report.findOneAndRemove({ _id: req.params.id });
+        res.send({ success: true, data: "okay" });
+    }catch(error){
+        next(error);
+    }
+});
 
 router.put('/:id', async(req, res, next) =>{
     try{

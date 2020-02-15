@@ -18,6 +18,9 @@ const config = {
   },
   client : {
     uri : process.env.CLIENT_URL
+  },
+  server : {
+    uri : process.env.SERVER_URL
   }
 };
 
