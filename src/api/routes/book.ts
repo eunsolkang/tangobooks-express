@@ -5,14 +5,14 @@ import {getHashCode} from '../../modules/getHashCode'
 const router = express.Router();
 
 router.post('/', async(req, res, next)=>{
-    const hash = getHashCode('book');
-    const data = {
-        name : req.body.name,
-        hash : hash,
-        publisher : req.body.publisher,
-        code : []
-    }
     try{
+        const hash = await getHashCode('book');
+        const data = {
+            name : req.body.name,
+            hash : hash,
+            publisher : req.body.publisher,
+            code : []
+        }
         const book = await new Book(data).save();
         res.send({status:200, data:book});
     }catch( error ){ 
@@ -61,7 +61,8 @@ router.put('/:id', async(req, res, next) =>{
     try{
         const book = await Book.findOneAndUpdate(
             { _id: req.params.id },
-            { $set : req.body}
+            { $set : req.body},
+            {new : true}
         );
         res.send({ success: true, data: book });
     }catch(error){

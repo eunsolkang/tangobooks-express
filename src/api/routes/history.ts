@@ -13,15 +13,25 @@ router.post('/', async(req, res, next)=>{
     }
 });
 
+
 router.get('/', async(req : any ,res, next) =>{
     try{ 
-      const historys = await History.find({user : req.user._id}).sort('-date').populate('book').populate('report');
+      const historys = await History.find({}).populate('book').populate('report');
       res.send({status:200, data:historys})
     }
     catch(error){
         next(error);
     }
 });
+// router.get('/', async(req : any ,res, next) =>{
+//     try{ 
+//       const historys = await History.find({user : req.user._id}).populate('book').populate('report');
+//       res.send({status:200, data:historys})
+//     }
+//     catch(error){
+//         next(error);
+//     }
+// });
 
 router.get('/:id', async(req,res, next) =>{
     try{

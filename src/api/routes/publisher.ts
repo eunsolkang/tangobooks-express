@@ -53,7 +53,8 @@ router.put('/:id', async(req, res, next) =>{
     try{
         const publisher = await Publisher.findOneAndUpdate(
             { _id: req.params.id },
-            { $set : req.body}
+            { $set : req.body},
+            {new : true}
         );
         res.send({ success: true, data: publisher });
     }catch(error){
