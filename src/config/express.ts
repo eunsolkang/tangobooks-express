@@ -12,7 +12,7 @@ import cors from 'cors';
 import '../passport/kakao-login'
 import '../passport/local-signin';
 import '../passport/local-signup';
-import '../passport/jwt';
+import '../passport/naver-login';
 
 var flash = require('connect-flash');
 

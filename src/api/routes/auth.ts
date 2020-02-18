@@ -14,6 +14,11 @@ router.get('/kakao',
       next();
     },passport.authenticate("kakao-login")
 );
+router.get('/logout', 
+    (req : any, res, next) => {
+      req.session.destroy();
+    }
+);
 
 router.get(
     "/kakao/callback",
@@ -32,6 +37,25 @@ router.get(
         });
       }
     }
+);
+
+router.get('/naver', 
+    (req, res, next) => {
+      res.header("Access-Control-Allow-Origin", "*");
+      next();
+    },passport.authenticate("naver-login")
+);
+
+router.get(
+  "/naver/callback",
+  passport.authenticate("naver-login", {
+    failureRedirect: `${config.client.uri}/admin/login`,
+    session: true
+  }), async(req :any, res, next) => {
+      req.session.save(function(){
+        res.redirect(`${config.client.uri}/admin`)
+      });
+  }
 );
 
 
@@ -54,7 +78,6 @@ router.get('/me', async(req : any, res, next)=>{
   }
 })
 
-
 router.put('/user/:id', async(req : any, res, next)=>{
   console.log(req.body);
   const user = await User.findOneAndUpdate(
@@ -67,7 +90,11 @@ router.put('/user/:id', async(req : any, res, next)=>{
 
 router.put('/lib/:hash', async(req : any, res, next)=>{
   try{
-    const book = await Book.findOne({ hash: req.params.hash }) as unknown as BookModel;
+    const book = await Book.findOneAndUpdate(
+      { hash: req.params.hash }, 
+      { $addToSet : {user : req.user._id}},
+      {new : true}
+    )
     const newUser = await User.findOneAndUpdate(
       { _id: req.user._id},
       { $addToSet : {library : book._id}},
@@ -81,9 +108,16 @@ router.put('/lib/:hash', async(req : any, res, next)=>{
     next(error);
   }
 });
+
+
+
 router.delete('/lib/:hash', async(req : any, res, next)=>{
   try{
-    const book = await Book.findOne({ hash: req.params.hash }) as unknown as BookModel;
+    const book = await Book.findOneAndUpdate(
+      { hash: req.params.hash },
+      { $pull : {user : req.user._id}},
+      {new : true}   
+    ) 
     const newUser = await User.findOneAndUpdate(
       { _id: req.user._id},
       { $pull : {library : book._id}},
@@ -98,19 +132,6 @@ router.delete('/lib/:hash', async(req : any, res, next)=>{
   }
 });
 
-router.post(
-  '/signup',
-  validateBody,
-  passport.authenticate('local-signup', { session: false }),
-  getToken
-)
-router.post(
-  '/signin',
-  validateBody,
-  passport.authenticate('local-signin', { session: false }),
-  getToken
-)
-
 router.get('/users', async(req, res, next) => {
   try{
       const users =  await User.find({});
@@ -123,9 +144,11 @@ router.get('/users', async(req, res, next) => {
   }
   
 });
-router.delete('/users', async(req, res, next) => {
+router.delete('/user/:id', async(req : any, res, next) => {
   try{
-      const users =  await User.remove({});
+      console.log(req.param.id);
+      
+      const users =  await User.remove({_id : req.param.id});
       res.send({
           status : 200,
           data : users
@@ -133,7 +156,6 @@ router.delete('/users', async(req, res, next) => {
   }catch(error){
       next(error);
   }
-  
 });
 
 export default router;

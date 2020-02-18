@@ -1,23 +1,23 @@
 import mongoose, { Schema } from "mongoose";
-import { PublisherModel } from './Publisher'
+import { UserModel } from './User'
 
 export interface BookModel extends mongoose.Document {
     name : string;
     hash : string;
     active : boolean;
-    publisher : PublisherModel
     codes : [{
         code : string;
         url : string;
         active : boolean;
         price : number;
-    }]
+    }];
+    user: [UserModel]
 }
 const BookSchema: Schema<BookModel> = new Schema({
     name : { type: String, required : true },
     hash : { type: String },
     active : { type : Boolean, default : true},
-    publisher : { type: mongoose.Schema.Types.ObjectId, ref: 'Publisher', required : true },
+    user : [{ type: mongoose.Schema.Types.ObjectId, ref: 'user', required : true }],
     codes : [{
         code : { type: String },
         url : { type: String },

@@ -27,22 +27,15 @@ router.get('/', async(req, res, next) =>{
     }
 });
 
-// router.get('/:id', async(req,res, next) =>{
-//     try{
-//         await Post.findOne({_id: req.params.id}, (err, post) => {
-//             if (err) {
-//                 return res.status(500).json({error: err});
-//             }
-//             if ( !post ) {
-//                 return res.status(404).json({error: 'report not found!'});
-//             }
-//             res.send({success : true, data : post});
-//         });
+router.get('/:id', async(req : any,res, next) =>{
+    try{
+        const reports = await Report.find({publisher : req.user._id}).populate("book").populate("publisher").populate("user");
+        res.send({status:200, data:reports})
         
-//     }catch(error){
-//         next(error);
-//     }
-// });
+    }catch(error){
+        next(error);
+    }
+});
 
 router.delete('/:id', async(req, res, next) => {
     try{

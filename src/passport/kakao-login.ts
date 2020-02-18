@@ -26,6 +26,7 @@ passport.use(
           let newUser = new User(data) as UserModel;
           newUser.hash = await getHashCode('user')
           await newUser.save();
+          return done(null, newUser)
         }catch(e){
           return done('error!')
         }

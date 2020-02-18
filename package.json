@@ -32,6 +32,7 @@
     "passport-jwt": "^4.0.0",
     "passport-kakao": "^1.0.0",
     "passport-local": "^1.0.0",
+    "passport-naver": "^1.0.6",
     "session-file-store": "^1.4.0"
   },
   "devDependencies": {

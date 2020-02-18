@@ -1,19 +1,23 @@
 import express from "express";
 import Book from "../../models/Book";
 import {getHashCode} from '../../modules/getHashCode'
+import Publisher from "../../models/Publisher";
 
 const router = express.Router();
 
-router.post('/', async(req, res, next)=>{
+router.post('/', async(req : any, res, next)=>{
     try{
         const hash = await getHashCode('book');
         const data = {
             name : req.body.name,
             hash : hash,
-            publisher : req.body.publisher,
             code : []
         }
         const book = await new Book(data).save();
+        await Publisher.findOneAndUpdate(
+            { _id: req.user._id },
+            { $push : {book : book._id}},
+        );     
         res.send({status:200, data:book});
     }catch( error ){ 
         next(error);

@@ -15,7 +15,7 @@ router.post('/', async(req, res, next)=>{
 
 router.get('/', async(req,res, next) =>{
     try{ 
-      const publishers = await Publisher.find({});
+      const publishers = await Publisher.find({}).populate('book');
       res.send({status:200, data:publishers})
     }
     catch(error){
@@ -23,21 +23,22 @@ router.get('/', async(req,res, next) =>{
     }
 });
 
-router.get('/:id', async(req,res, next) =>{
-    try{
-        await Publisher.findOne({_id: req.params.id}, (err, publisher) => {
-            if (err) {
-                return res.status(500).json({error: err});
-            }
-            if ( !publisher ) {
-                return res.status(404).json({error: 'publisher not found!'});
-            }
+
+
+router.get('/check', async(req : any,res, next) =>{
+    if (req.isAuthenticated()) {
+        try{
+            const publisher = await Publisher.findById(req.user._id).populate('book')
             res.send({success : true, data : publisher});
-        });
-        
-    }catch(error){
-        next(error);
+        }catch(error){
+            next(error);
+        }
     }
+    else{
+        console.log('?');
+
+    }
+   
 });
 
 router.delete('/:id', async(req, res, next) => {

@@ -13,7 +13,6 @@ router.post('/', async(req, res, next)=>{
     }
 });
 
-
 router.get('/', async(req : any ,res, next) =>{
     try{ 
       const historys = await History.find({}).populate('book').populate('report');
