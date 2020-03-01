@@ -15,7 +15,7 @@ router.post('/', async(req, res, next)=>{
 
 router.get('/', async(req,res, next) =>{
     try{ 
-      const publishers = await Publisher.find({}).populate({path: "book", populate: {path: "history"}})
+      const publishers = await Publisher.find({}).populate({path: "book", populate: {path: "historys"}})
       res.send({status:200, data:publishers})
     }
     catch(error){
