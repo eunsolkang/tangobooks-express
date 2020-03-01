@@ -1,12 +1,19 @@
 import express from "express";
 import History from "../../models/History";
 import User from "../../models/User";
+import Book from "../../models/Book";
 
 const router = express.Router();
 
 router.post('/', async(req, res, next)=>{
     try{
         const history = await new History(req.body).save();
+        console.log(req.body.book, history._id);
+        
+        await Book.findOneAndUpdate(
+            { _id: req.body.book },
+            { $push : {historys : history._id}}
+        );
         res.send({status:200, data:history});
     }catch( error ){ 
         next(error);

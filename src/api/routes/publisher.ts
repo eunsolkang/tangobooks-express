@@ -15,7 +15,7 @@ router.post('/', async(req, res, next)=>{
 
 router.get('/', async(req,res, next) =>{
     try{ 
-      const publishers = await Publisher.find({}).populate('book');
+      const publishers = await Publisher.find({}).populate('book')
       res.send({status:200, data:publishers})
     }
     catch(error){
@@ -28,7 +28,7 @@ router.get('/', async(req,res, next) =>{
 router.get('/check', async(req : any,res, next) =>{
     if (req.isAuthenticated()) {
         try{
-            const publisher = await Publisher.findById(req.user._id).populate('book')
+            const publisher = await Publisher.findById(req.user._id).populate('book').populate('historys');
             res.send({success : true, data : publisher});
         }catch(error){
             next(error);

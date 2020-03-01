@@ -11,7 +11,8 @@ router.post('/', async(req : any, res, next)=>{
         const data = {
             name : req.body.name,
             hash : hash,
-            code : []
+            code : [],
+            publisher : req.body.publisher
         }
         const book = await new Book(data).save();
         await Publisher.findOneAndUpdate(
@@ -26,8 +27,9 @@ router.post('/', async(req : any, res, next)=>{
 
 
 router.get('/', async(req,res, next) =>{
+    console.log(req.query);
     try{ 
-      const books = await Book.find({[req.query] : req.query.publisher});
+      const books = await Book.find(req.query);
       res.send({status:200, data:books})
     }
     catch(error){
@@ -62,16 +64,33 @@ router.delete('/:id', async(req, res, next) => {
 });
 
 router.put('/:id', async(req, res, next) =>{
-    try{
-        const book = await Book.findOneAndUpdate(
-            { _id: req.params.id },
-            { $set : req.body},
-            {new : true}
-        );
-        res.send({ success: true, data: book });
-    }catch(error){
-        next(error);
+    if (req.query.type === 'code'){
+        console.log(req.body);
+        
+        try{
+            const book = await Book.findOneAndUpdate(
+                { _id: req.params.id },
+                { $push : {codes : req.body}},
+                {new : true}
+            );
+            res.send({ success: true, data: book });
+        }catch(error){
+            next(error);
+        }
     }
+    else{
+        try{
+            const book = await Book.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set : req.body},
+                { new : true}
+            );
+            res.send({ success: true, data: book });
+        }catch(error){
+            next(error);
+        }
+    }
+    
 })
 
 export default router;
