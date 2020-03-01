@@ -144,6 +144,19 @@ router.get('/users', async(req, res, next) => {
   }
   
 });
+router.get('/user/:hash', async(req : any, res, next) => {
+  try{
+      console.log(req.param.hash);
+      
+      const user =  await User.findOne({hash : req.param.hash});
+      res.send({
+          status : 200,
+          data : user
+      });
+  }catch(error){
+      next(error);
+  }
+});
 router.delete('/user/:id', async(req : any, res, next) => {
   try{
       console.log(req.param.id);
