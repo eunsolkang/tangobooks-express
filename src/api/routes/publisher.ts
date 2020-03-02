@@ -28,7 +28,7 @@ router.get('/', async(req,res, next) =>{
 router.get('/check', async(req : any,res, next) =>{
     if (req.isAuthenticated()) {
         try{
-            const publisher = await Publisher.findById(req.user._id).populate('book').populate('historys');
+            const publisher = await Publisher.findById(req.user._id).populate({path: "book", populate: {path: "historys"}})
             res.send({success : true, data : publisher});
         }catch(error){
             next(error);

@@ -12,7 +12,7 @@ export interface PublisherModel extends mongoose.Document {
     publisher_id : string;
 }
 const PublisherSchema: Schema<PublisherModel> = new Schema({
-    book : [{ type: mongoose.Schema.Types.ObjectId, ref: 'book', required : true }],
+    book : [{ type: mongoose.Schema.Types.ObjectId, ref: 'book', default: [] }],
     publisher_id : { type: String },
     author : { type: String },
     address : { type: String },
