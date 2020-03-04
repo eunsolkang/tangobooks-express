@@ -17,6 +17,7 @@ router.get('/kakao',
 router.get('/logout', 
     (req : any, res, next) => {
       req.session.destroy();
+      res.send({status : 200, data : true})
     }
 );
 
@@ -159,9 +160,9 @@ router.get('/user/:hash', async(req : any, res, next) => {
 });
 router.delete('/user/:id', async(req : any, res, next) => {
   try{
-      console.log(req.param.id);
+      console.log(req.params.id);
       
-      const users =  await User.remove({_id : req.param.id});
+      const users =  await User.remove({_id : req.params.id});
       res.send({
           status : 200,
           data : users
