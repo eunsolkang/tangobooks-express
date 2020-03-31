@@ -34,7 +34,7 @@ app.use(
     saveUninitialized: false,
     store : require('mongoose-session')(mongoose),
     cookie: {
-      domain : '.tngobooks.com',
+      domain : 'localhost',
       secure : false,
       maxAge: 86400 * 1000 // 24 hours in milliseconds
     }

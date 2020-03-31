@@ -71,7 +71,7 @@ router.put('/:id', async(req, res, next) =>{
             const book = await Book.findOneAndUpdate(
                 { _id: req.params.id },
                 { $push : {codes : req.body}},
-                {new : true}
+                { new : true}
             );
             res.send({ success: true, data: book });
         }catch(error){

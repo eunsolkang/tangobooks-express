@@ -12,6 +12,8 @@ export interface BookModel extends mongoose.Document {
         url : string;
         active : boolean;
         price : number;
+        type : String;
+        desc : String;
     }];
     user: [UserModel]
     historys : [HistoryModel],
@@ -28,7 +30,9 @@ const BookSchema: Schema<BookModel> = new Schema({
         code : { type: String },
         url : { type: String },
         active : { type : Boolean, default : true },
-        price : {type : Number, default : 0}
+        price : {type : Number, default : 0},
+        desc : {type : String},
+        type : {type : String},
     }]
 },{ timestamps: true } );
 
