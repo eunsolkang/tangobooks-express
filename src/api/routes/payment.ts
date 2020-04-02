@@ -3,6 +3,7 @@ import Payment, {PaymentModel} from "../../models/Payment";
 import User from '../../models/User';
 import axios from 'axios'
 import config from '../../config/vars'
+import moment from 'moment';
 const router = express.Router();
 
 // router.post('/complete', async(req, res, next)=>{
@@ -59,13 +60,14 @@ router.post('/', async(req, res, next)=>{
 
 router.get('/', async(req, res, next)=>{
   try{ 
-      const payments = await Payment.find({});
+      const payments = await Payment.find({date : req.query.date}).populate('user');
       res.send({status:200, data:payments})
     }
     catch(error){
         next(error);
     }
 });
+
 
 router.put('/:id', async(req, res, next)=>{
   try{

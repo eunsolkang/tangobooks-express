@@ -10,6 +10,7 @@ export interface PaymentModel extends mongoose.Document {
     check : Boolean, // 확인
     usage : string, // 용도
     tool : string // 수단
+    date : string;
 }
 const Paymentschema: Schema<PaymentModel> = new Schema({
     user : { type: mongoose.Schema.Types.ObjectId, ref: 'user'},
@@ -18,6 +19,7 @@ const Paymentschema: Schema<PaymentModel> = new Schema({
     check : {type : Boolean, default : false},
     usage : {type : String},
     tool : {type : String},
+    date : {type : String}
 },{ timestamps: true } );
 
 export default  mongoose.model('payment', Paymentschema);
