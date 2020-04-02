@@ -59,13 +59,25 @@ router.post('/', async(req, res, next)=>{
 });
 
 router.get('/', async(req, res, next)=>{
-  try{ 
+  if (req.query.date){
+    try{ 
       const payments = await Payment.find({date : req.query.date}).populate('user');
       res.send({status:200, data:payments})
     }
     catch(error){
         next(error);
     }
+  }
+  else{
+    try{ 
+      const payments = await Payment.find({}).populate('user');
+      res.send({status:200, data:payments})
+    }
+    catch(error){
+        next(error);
+    }
+  }
+  
 });
 
 
