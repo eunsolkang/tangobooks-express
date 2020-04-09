@@ -55,12 +55,27 @@ router.get('/:hash', async(req,res, next) =>{
 });
 
 router.delete('/:id', async(req, res, next) => {
-    try{
-        await Book.findOneAndRemove({ _id: req.params.id });
-        res.send({ success: true, data: "okay" });
-    }catch(error){
-        next(error);
+    if (req.query.type === 'code'){
+        try{
+            const book = await Book.findOneAndUpdate(
+                { _id: req.params.id },
+                { $pull : {codes : req.body}},
+                { new : true}
+            );
+            res.send({ success: true, data: book });
+        }catch(error){
+            next(error);
+        }
     }
+    else{
+        try{
+            await Book.findOneAndRemove({ _id: req.params.id });
+            res.send({ success: true, data: "okay" });
+        }catch(error){
+            next(error);
+        }
+    }
+    
 });
 
 router.put('/:id', async(req, res, next) =>{
