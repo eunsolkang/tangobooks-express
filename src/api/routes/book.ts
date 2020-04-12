@@ -39,15 +39,8 @@ router.get('/', async(req,res, next) =>{
 
 router.get('/:hash', async(req,res, next) =>{
     try{
-        await Book.findOne({hash: req.params.hash}, (err, book) => {
-            if (err) {
-                return res.status(500).json({error: err});
-            }
-            if ( !book ) {
-                return res.status(404).json({error: 'book not found!'});
-            }
-            res.send({success : true, data : book});
-        });
+        const book = await (Book.findOne({hash: req.params.hash})).populate('historys');
+        res.send({success : true, data : book});
         
     }catch(error){
         next(error);
