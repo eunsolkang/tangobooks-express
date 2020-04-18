@@ -3,6 +3,7 @@ import {PublisherModel} from './Publisher'
 import {BookModel} from './Book'
 import {UserModel } from './User'
 import { ReportModel } from './Report'
+import timestamp from 'mongoose-timestamp'
 
 export interface HistoryModel extends mongoose.Document {
     user : UserModel;
@@ -18,6 +19,6 @@ const HistorySchema: Schema<HistoryModel> = new Schema({
     code : {type : String},
     coin : {type : Number}
 
-},{ timestamps: true } );
-
+});
+HistorySchema.plugin(timestamp)
 export default  mongoose.model('history', HistorySchema);

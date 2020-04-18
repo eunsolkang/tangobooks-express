@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import {PublisherModel} from './Publisher'
 import {BookModel} from './Book'
-import {UserModel } from './User'
+import {UserModel } from './User';
+import timestamp from 'mongoose-timestamp'
 
 export interface ReportModel extends mongoose.Document {
     publisher : PublisherModel;
@@ -23,6 +24,7 @@ const ReportSchema: Schema<ReportModel> = new Schema({
     answer : {type : String},
     refund : {type : Boolean}
 
-},{ timestamps: true } );
+} );
+ReportSchema.plugin(timestamp);
 
 export default  mongoose.model('report', ReportSchema);

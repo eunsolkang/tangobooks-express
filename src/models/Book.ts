@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { UserModel } from './User'
 import { HistoryModel } from "./History";
 import { PublisherModel } from "./Publisher";
-
+import timestamp from 'mongoose-timestamp'
 export interface BookModel extends mongoose.Document {
     name : string;
     hash : string;
@@ -34,6 +34,7 @@ const BookSchema: Schema<BookModel> = new Schema({
         desc : {type : String},
         type : {type : String},
     }]
-},{ timestamps: true } );
+} );
+BookSchema.plugin(timestamp);
 
 export default  mongoose.model('book', BookSchema);

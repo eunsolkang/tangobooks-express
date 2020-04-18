@@ -1,6 +1,7 @@
 import express from "express";
 import Report from "../../models/Report";
 import History from "../../models/History";
+import User from "../../models/User";
 
 const router = express.Router();
 
@@ -47,10 +48,16 @@ router.delete('/:id', async(req, res, next) => {
 });
 
 router.put('/:id', async(req, res, next) =>{
+    
     try{
         const report = await Report.findOneAndUpdate(
             { _id: req.params.id },
-            { $set : req.body },
+            { $set : {refund : true} },
+            { new : true }
+        );
+        await User.findOneAndUpdate(
+            { _id: req.body.userId },
+            { $inc: {coin : req.body.price} },
             { new : true }
         );
         res.send({ success: true, data: report });

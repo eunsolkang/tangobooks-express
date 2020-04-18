@@ -1,5 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import { BookModel } from './Book'
+import timestamp from 'mongoose-timestamp'
+
+
 export interface PublisherModel extends mongoose.Document {
     author : string;
     address : string;
@@ -21,6 +24,8 @@ const PublisherSchema: Schema<PublisherModel> = new Schema({
     rank : { type: String },
     phone : { type: String },
     email : { type: String },
-},{ timestamps: true } );
+} );
+
+PublisherSchema.plugin(timestamp)
 
 export default  mongoose.model('publisher', PublisherSchema);

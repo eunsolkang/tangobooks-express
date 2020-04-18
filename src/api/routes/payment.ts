@@ -81,7 +81,7 @@ router.get('/', async(req, res, next)=>{
 });
 
 
-router.put('/:id', async(req, res, next)=>{
+router.put('/upgrade/:id', async(req, res, next)=>{
   try{
     const payment = await Payment.findOneAndUpdate(
         { _id: req.params.id },
@@ -92,7 +92,20 @@ router.put('/:id', async(req, res, next)=>{
       { _id: payment.user },
       { $inc : {coin : 20400}},
       { new : true}
-  );
+    );
+    res.send({ success: true, data: payment });
+  }catch(error){
+      next(error);
+  }
+});
+
+router.put('/check/:id', async(req, res, next)=>{
+  try{
+    const payment = await Payment.findOne(
+        { _id: req.params.id },
+        { $set : req.body},
+        { new : true}
+    ) as PaymentModel;
     res.send({ success: true, data: payment });
   }catch(error){
       next(error);

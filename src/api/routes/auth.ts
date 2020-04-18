@@ -5,6 +5,7 @@ import User, { UserModel } from '../../models/User';
 import Book, { BookModel } from '../../models/Book';
 import { validateBody } from '../../modules/validateBody';
 import config from "../../config/vars";
+import moment from 'moment'
 
 const router = express.Router();
 
@@ -84,6 +85,16 @@ router.put('/user/:id', async(req : any, res, next)=>{
   const user = await User.findOneAndUpdate(
       { _id: req.params.id },
       { $set : req.body},
+      {new : true}
+  ).populate('library');
+  res.send({ success: true, data: user });
+})
+
+router.put('/refund/:id', async(req : any, res, next)=>{
+  console.log(req.body);
+  const user = await User.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set : {refundDate : moment(new Date()).format('YYYY-MM-DD'), refund : true}},
       {new : true}
   ).populate('library');
   res.send({ success: true, data: user });

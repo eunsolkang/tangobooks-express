@@ -10,8 +10,8 @@ import passport from 'passport';
 import session from 'express-session';
 import cors from 'cors';
 import '../passport/kakao-login'
-import '../passport/local-signin';
-import '../passport/local-signup';
+// import '../passport/local-signin';
+// import '../passport/local-signup';
 import '../passport/naver-login';
 
 var flash = require('connect-flash');
@@ -34,7 +34,7 @@ app.use(
     saveUninitialized: false,
     store : require('mongoose-session')(mongoose),
     cookie: {
-      domain : '.tngobooks.com',
+
       secure : false,
       maxAge: 86400 * 1000 // 24 hours in milliseconds
     }

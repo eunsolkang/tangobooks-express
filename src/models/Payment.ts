@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { UserModel } from './User'
 import { HistoryModel } from "./History";
 import { PublisherModel } from "./Publisher";
+import timestamp from 'mongoose-timestamp'
 
 export interface PaymentModel extends mongoose.Document {
     user : UserModel, // 입금유저
@@ -20,6 +21,9 @@ const Paymentschema: Schema<PaymentModel> = new Schema({
     usage : {type : String},
     tool : {type : String},
     date : {type : String}
-},{ timestamps: true } );
+} );
+Paymentschema.plugin(timestamp);
+
+
 
 export default  mongoose.model('payment', Paymentschema);
