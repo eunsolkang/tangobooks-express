@@ -12,12 +12,14 @@ export interface PaymentModel extends mongoose.Document {
     usage : string, // 용도
     tool : string // 수단
     date : string;
+    done : Boolean;
 }
 const Paymentschema: Schema<PaymentModel> = new Schema({
     user : { type: mongoose.Schema.Types.ObjectId, ref: 'user'},
     name : {type : String},
     bank : {type : String},
     check : {type : Boolean, default : false},
+    done : {type : Boolean, default : false},
     usage : {type : String},
     tool : {type : String},
     date : {type : String}
