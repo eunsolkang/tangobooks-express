@@ -42,7 +42,12 @@ app.use(
 );
 
 const corsOptions = {
-    origin: ['http://localhost:3001', 'http://localhost:8080', 'http://www.tngobooks.com:8080', 'http://www.tngobooks.com:3001', 'http://www.tngobooks.com', 'http://tngobooks.com', 'https://tngobooks.com', 'https://www.tngobooks.com'],
+    origin: ['http://localhost:3001', 'http://localhost:8080', 
+    'http://www.tngobooks.com:8080', 'http://www.tngobooks.com:3001', 
+    'http://www.tngobooks.com', 'http://tngobooks.com', 
+    'https://tngobooks.com', 'https://www.tngobooks.com',
+    'https://admin.tngobooks.com'
+  ],
     credentials: true, // true로 하면 설정한 내용을 response 헤더에 추가 해줍니다.
 };
 app.use(cors(corsOptions));
