@@ -81,7 +81,9 @@ router.get('/', async(req, res, next)=>{
 });
 
 
-router.put('/upgrade/:id', async(req, res, next)=>{
+router.put('/:id', async(req, res, next)=>{
+  console.log(req.body);
+  
   try{
     const payment = await Payment.findOneAndUpdate(
         { _id: req.params.id },
