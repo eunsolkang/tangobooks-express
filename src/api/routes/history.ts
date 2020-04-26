@@ -23,7 +23,7 @@ router.post('/', async(req, res, next)=>{
 router.get('/', async(req : any ,res, next) =>{
     try{ 
       const historys = await History.find({user : req.user._id}).sort({date: -1}).populate('book').populate('report');
-      res.send({status:200, data:historys})
+      res.send({status:200, data:historys.reverse()})
     }
     catch(error){
         next(error);

@@ -19,13 +19,26 @@ router.post('/', async(req, res, next)=>{
 });
 
 router.get('/', async(req, res, next) =>{
-    try{ 
-      const reports = await Report.find({}).populate("book").populate("publisher").populate("user");
-      res.send({status:200, data:reports})
+    console.log(req.query);
+    if ( req.query.publisher !== undefined ) {
+        try{ 
+            const reports = await Report.find({publisher : req.query.publisher}).populate("book").populate("publisher").populate("user");
+            res.send({status:200, data: reports.reverse()})
+          }
+          catch(error){
+              next(error);
+          }
     }
-    catch(error){
-        next(error);
+    else{
+        try{ 
+            const reports = await Report.find({}).populate("book").populate("publisher").populate("user");
+            res.send({status:200, data:reports})
+          }
+          catch(error){
+              next(error);
+          }
     }
+    
 });
 
 router.get('/:id', async(req : any,res, next) =>{
@@ -49,21 +62,38 @@ router.delete('/:id', async(req, res, next) => {
 
 router.put('/:id', async(req, res, next) =>{
     
-    try{
-        const report = await Report.findOneAndUpdate(
-            { _id: req.params.id },
-            { $set : {refund : true} },
-            { new : true }
-        );
-        await User.findOneAndUpdate(
-            { _id: req.body.userId },
-            { $inc: {coin : req.body.price} },
-            { new : true }
-        );
-        res.send({ success: true, data: report });
-    }catch(error){
-        next(error);
+    if ( req.body.answer ){
+        try{
+            const report = await Report.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set : req.body },
+                { new : true }
+            );
+            res.send({ success: true, data: report });
+        }catch(error){
+            next(error);
+        }
     }
-})
+    else{
+        try{
+            const report = await Report.findOneAndUpdate(
+                { _id: req.params.id },
+                { $set : {refund : true} },
+                { new : true }
+            );
+            await User.findOneAndUpdate(
+                { _id: req.body.userId },
+                { $inc: {coin : req.body.price} },
+                { new : true }
+            );
+            res.send({ success: true, data: report });
+        }catch(error){
+            next(error);
+        }
+    }
+   
+
+    
+});
 
 export default router;

@@ -94,7 +94,7 @@ router.put('/refund/:id', async(req : any, res, next)=>{
   console.log(req.body);
   const user = await User.findOneAndUpdate(
       { _id: req.params.id },
-      { $set : {refundDate : moment(new Date()).format('YYYY-MM-DD'), refund : true}},
+      { $set : {refundDate : moment(new Date()).format('YYYY-MM-DD'), refund : true, coin : 0}},
       {new : true}
   ).populate('library');
   res.send({ success: true, data: user });

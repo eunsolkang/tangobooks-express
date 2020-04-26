@@ -13,6 +13,7 @@ export interface PublisherModel extends mongoose.Document {
     email : string;
     book : [BookModel]
     publisher_id : string;
+
 }
 const PublisherSchema: Schema<PublisherModel> = new Schema({
     book : [{ type: mongoose.Schema.Types.ObjectId, ref: 'book', default: [] }],
@@ -24,8 +25,7 @@ const PublisherSchema: Schema<PublisherModel> = new Schema({
     rank : { type: String },
     phone : { type: String },
     email : { type: String },
-} );
+}, { timestamps : true } );
 
-PublisherSchema.plugin(timestamp)
 
 export default  mongoose.model('publisher', PublisherSchema);
